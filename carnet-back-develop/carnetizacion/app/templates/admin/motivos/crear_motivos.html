@@ -1,0 +1,40 @@
+{% extends "shared/base_a.html" %}
+
+{% block content %}
+
+<div class="section section-sm pb-0 mb-n4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <h3 class="text-center">Tipo de Motivo</h3>
+        </div>
+    </div>
+</div>
+
+{% for error in errors %}
+    <li>{{error}}</li>
+{% endfor %}
+
+<!-- Section -->
+<div class="section section-md pt-4">
+    <form method="POST">
+    <div class="container">
+        <div class="row mb-4 mb-lg-5">
+            <div class="col-lg-4 col-sm-6">
+                <!-- Form -->
+                <div class="mb-4">
+                    <label for="exampleInputEmail6">Nombre</label>
+                    <input required type="nombre_motivo" class="form-control" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo debe tener letras" id="nombre_motivo" name="nombre_motivo" value="{{tipo_motivo.nombre_motivo}}">
+                    <small style="color: #FF0000; font-size: 16px;" type="error_nombre_motivo" id="error_nombre_motivo" name="error_nombre_motivo" class="form-text text-gray" >{{error_nombre_motivo}}</small>
+                </div>
+                <!-- End of Form -->
+            </div>
+        </div>
+        <button type="submit" class="btn bg-gradient-primary my-1 me-1" name="Aceptar" value="{{Aceptar}}">Aceptar</a>
+
+        <!-- <div class="row mb-4 mb-lg-5">
+                <button class="btn btn-primary" type="submit" style="position: inherit;">Crear</button>
+        </div> -->
+    </div>
+</form>
+</div>
+{% endblock content %}

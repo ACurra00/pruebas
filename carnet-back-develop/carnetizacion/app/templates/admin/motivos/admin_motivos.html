@@ -1,0 +1,85 @@
+{% extends "shared/base_a.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h5>Tipos de Motivos</h5>
+            <div id="result" class="text-danger text-bold lead"></div>
+            <div class="nav-wrapper position-relative end-0">
+            <a href="/motivos_admin/crear-motivo" class="btn bg-gradient-primary my-1 me-1">Añadir</a>
+    </div>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for tipo_motivo in list_tipo_motivos %}
+                  <tr>
+
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{ tipo_motivo.nombre_motivo }}</h6>
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- <td class="align-middle text-center text-sm">
+                      <span class="badge badge-sm bg-gradient-success">Online</span>
+                    </td>
+                    <td class="align-middle text-center">
+                      <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
+                    </td> -->
+                    <td class="align-middle">
+                      <form class="d-flex" action="/motivos_admin/editar-motivo/{{tipo_motivo.id_motivo}}">
+                            <button class="btn bg-gradient-primary my-1 me-1" id="btn3"  type="submit" style="position: inherit;">Editar</button>
+                        </form>
+                    </td>
+                    <td class="align-middle">
+                      <button class="btn bg-gradient-primary my-1 me-1" onclick="confirm_delete_motivo({{tipo_motivo.id_motivo}})" style="position: inherit;">Borrar</button>
+                    </td>
+
+                  </tr>
+                  {% endfor %}
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  {% endblock content %}
+
+  {% block javascripts %}
+<script type="text/javascript">
+      function confirm_delete_motivo(id) {
+        if (confirm('¿Estás seguro que deseas borrar este motivo?')) {
+            delete_motivo(id);
+        }
+    }
+
+    function delete_motivo(id){
+        fetch('/motivos/delete/'+id,{
+            method:'DELETE',})
+        .then(response => response.json())
+        .then(document.getElementById('result').innerHTML = "Refrescando...")
+        .then(data => document.getElementById('result').innerHTML = data.detail);
+        location.reload();
+
+    }
+
+</script>
+{% endblock javascripts %}

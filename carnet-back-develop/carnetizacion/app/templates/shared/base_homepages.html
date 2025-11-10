@@ -1,0 +1,21 @@
+{% extends "shared/base.html" %}
+<head>
+    {% block stylesheets %}
+    <!-- Fontawesome -->
+    <link href="{{url_for('static', path='vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+
+    <!-- Pixel CSS -->
+    <link href="{{url_for('static', path='css/pixel.css') }}" rel="stylesheet">
+
+    {% endblock stylesheets %}
+</head>
+<body>
+    {% include 'includes/navigation.html' %}
+
+    {% block content %}
+    
+    
+    {% endblock %}
+   
+
+</body>

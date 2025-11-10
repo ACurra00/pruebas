@@ -1,0 +1,418 @@
+{% extends "templates_visitantes/pages/page_index.html" %}
+
+
+{% block title %}
+    <title>Estado del carnet visitante</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="cashier-content-area mt-[30px] px-7">
+        <div class="cashier-salereturns-area bg-white p-7 custom-shadow rounded-lg pt-5 mb-5 shadow-sm">
+            <h4 class="text-[20px] font-bold text-heading mb-9">Control de entrada al visitante</h4>
+            <div class="cashier-managesale-top-btn default-light-theme mb-7">
+                <button class="mb-1 open hover:opacity-80 shadow-md">
+                    <iconify-icon icon="ic:baseline-plus" class="pr-3"></iconify-icon>
+                    Añadir visitante
+                </button>
+            </div>
+
+            <div class="cashier-table-header-search-area">
+                <div class="grid grid-cols-12 gap-x-5 mb-7 pb-0.5">
+                    <div class="md:col-span-6 col-span-12">
+                        <div class="cashier-table-header-search relative maxSm:mb-4">
+                            <input type="text" placeholder="Buscar en la lista">
+                            <span><iconify-icon icon="material-symbols:search"></iconify-icon></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="flex flex-col">
+                <div class="-m-1.5 overflow-x-auto border-2">
+                    <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div class="overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead>
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                        Identificación
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Motivo
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Area
+                                        destino
+                                    </th>
+                                    <th scope="col"
+                                        class="py-3 text-center text-xs font-medium text-gray-500 uppercase">Categoria
+                                        carnet
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado
+                                        carnet
+                                    </th>
+                                    <th scope="col"
+                                        class="py-3 text-center text-xs font-medium text-gray-500 uppercase">Folio
+                                        carnet
+                                    </th>
+                                    <th scope="col"
+                                        class="py-3 text-center text-xs font-medium text-gray-500 uppercase">Fecha
+                                        entrada
+                                    </th>
+                                    <th scope="col"
+                                        class="py-3 text-center text-xs font-medium text-gray-500 uppercase">Fecha
+                                        salida
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Acción
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                {% for visitante in visitantes %}
+                                    <tr>
+                                        <td class="px-6 py-1.5  whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                            {{ visitante.identificacion }}
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                            {{ visitante.nombre }}
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                            {{ visitante.motivo_visita }}
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                            {{ visitante.area_destino }}
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                            <span class="text-center bg-green-100 w-min px-3 rounded-xl">{{ visitante.categoria.tipo_categoria }}</span>
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                            <span class="bg-yellow-100 w-min px-5 rounded-xl">{{ visitante.estado.estado }}</span>
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                            <span class="bg-red-100 w-min px-5 rounded-xl">{{ visitante.folio }}</span>
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                            {{ visitante.fecha_entrada }}
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                            {{ visitante.fecha_salida }}
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-center text-sm font-medium flex gap-1">
+                                            <a href="/edit_visitante/{{ visitante.id }}">
+                                                <div class="openA hover:opacity-80 cursor-pointer">
+                                                    <iconify-icon icon="material-symbols:edit-outline"
+                                                                  style="color: red;"></iconify-icon>
+                                                </div>
+                                            </a>
+                                            <a href="/delete_visitante/{{ visitante.id }}">
+                                                <div class="hover:opacity-80 cursor-pointer">
+                                                    <iconify-icon icon="material-symbols:delete-outline"
+                                                                  style="color: red;"></iconify-icon>
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- popup modals  ANNADIR-->
+    <div class="relative z-10 pop-outer" style="display: none;" aria-labelledby="modal-title" role="dialog"
+         aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="cashier-popup-header relative mb-11">
+                            <div class="cashier-popup-header-title">
+                                <h4 class="text-[20px] text-heading font-bold">Añadir visitante</h4>
+                            </div>
+                            <div class="cashier-popup-header-close absolute -top-0 right-0">
+                                <div class="default-light-theme">
+                                    <a href="javascript:void(0)" class="close">
+                                        <iconify-icon icon="fa6-solid:xmark" class="mt-2 text-red-700"></iconify-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <form action="/add_visitante" method="post" class="grid grid-cols-12 gap-x-7 maxSm:gap-x-0">
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Nombre</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <input name="nombre" type="text" placeholder="Ahsan Enterprise">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Identificación</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <input name="identificacion" type="text" placeholder="99999999999">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Motivo</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <input name="motivo_visita" type="text" placeholder="Visita docente">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Area destino</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <input name="area_destino" type="text" placeholder="Rectorado">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Categoria carnet</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <select name="categoria_carnet" class="block"
+                                                    placeholder="Seleccione opción">
+                                                {% for categoria in categories %}
+                                                    <option value="{{ categoria.id }}">{{ categoria.tipo_categoria }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Estado carnet</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <select name="estado_carnet" class="block" placeholder="Seleccione opción">
+                                                {% for estado in estados %}
+                                                    <option value="{{ estado.id }}">{{ estado.estado }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Fecha entrada</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <input name="fecha_entrada" type="date" placeholder="mm/dd/yyyy">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Fecha salida</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <input name="fecha_salida" type="date" placeholder="mm/dd/yyyy">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Folio carnet</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <input name="folio" type="text" placeholder="85701">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-12">
+                                <div class="cashier-popup-btn default-light-theme pt-1.5 hover:opacity-80">
+                                    <button type="submit" class="btn-primary">Insertar visitante</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- popup modals  ACTUALIZAR-->
+    {% if v is defined %}
+        <div class="relative z-10 pop-outerA" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                            <div class="cashier-popup-header relative mb-11">
+                                <div class="cashier-popup-header-title">
+                                    <h4 class="text-[20px] text-heading font-bold">Actualizar visitante</h4>
+                                </div>
+                                <div class="cashier-popup-header-close absolute -top-0 right-0">
+                                    <div class="default-light-theme">
+                                        <a href="/visitante" class="close">
+                                            <iconify-icon icon="fa6-solid:xmark"
+                                                          class="mt-2 text-red-700"></iconify-icon>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <form action="/update_visitantes/{{ v.id }}" method="post"
+                                  class="grid grid-cols-12 gap-x-7 maxSm:gap-x-0">
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Nombre</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <input name="nombre" value="{{ v.nombre }}" type="text"
+                                                       placeholder="Ahsan Enterprise">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Identificación</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <input name="identificacion" value="{{ v.identificacion }}" type="text"
+                                                       placeholder="99999999999">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Motivo</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <input name="motivo_visita" value="{{ v.motivo_visita }}" type="text"
+                                                       placeholder="Visita docente">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Area destino</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <input name="area_destino" value="{{ v.area_destino }}" type="text"
+                                                       placeholder="Rectorado">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Categoria carnet</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <select name="categoria_carnet" class="block"
+                                                        placeholder="Seleccione opción">
+                                                    {% for categoria in categorias -%}
+                                                        <option value="{{ categoria.id }}"
+                                                                {% if categoria.id == v.categoria.id %}
+                                                                selected
+                                                                {% endif %}
+                                                        >{{ categoria.tipo_categoria }}</option>
+                                                    {% endfor -%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Estado carnet</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <select name="estado_carnet" class="block"
+                                                        placeholder="Seleccione opción">
+                                                    {% for estado in estados %}
+                                                        <option value="{{ estado.id }}"
+                                                                {% if estado.id == v.estado.id %}
+                                                                selected
+                                                                {% endif %}
+                                                        >{{ estado.estado }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Fecha entrada</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <input name="fecha_entrada" value="{{ v.fecha_entrada }}" type="date"
+                                                       placeholder="mm/dd/yyyy">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Fecha salida</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <input name="fecha_salida" value="{{ v.fecha_salida }}" type="date"
+                                                       placeholder="mm/dd/yyyy">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Folio carnet</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <input name="folio" value="{{ v.folio }}" type="text"
+                                                       placeholder="85701">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-12">
+                                    <div class="cashier-popup-btn default-light-theme pt-1.5 hover:opacity-80">
+                                        <button type="submit" class="btn-primary">Modificar visitante</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

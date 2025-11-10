@@ -1,0 +1,60 @@
+{% extends "shared/base_a.html" %}
+
+{% block content %}
+
+<div class="section section-sm pb-0 mb-n4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <h3 class="text-center">Usuario</h3>
+        </div>
+    </div>
+</div>
+
+{% for error in errors %}
+    <li>{{error}}</li>
+{% endfor %}
+
+<!-- Section -->
+<div class="section section-md pt-4">
+    <form id = "formUser" method="POST">
+        <small style="color: #FF0000; font-size: 16px;" type="error_usuario_inexistente" id="error_nombre_usuario" name="error_usuario_inexistente" class="form-text text-gray">{{error_usuario_inexistente}}</small>
+    <div class="container">
+        <div class="row mb-4 mb-lg-5">
+            <div class="col-lg-4 col-sm-6">
+                <!-- Form -->
+                <div class="mb-4">
+                    <label for="exampleInputEmail6">Carnet de identidad</label>
+                    <input {% if edit %}disabled{% endif %} required type="nombre_usuario" class="form-control" id="nombre_usuario" pattern="^\d{11}$" title="El carnet debe estar conformado por 11 dígitos, no deje margen ni espacios en blanco" name="nombre_usuario" value="{{usuario.nombre_usuario}}">
+                    <small style="color: #FF0000; font-size: 16px;" type="error_nombre_usuario" id="error_nombre_usuario" name="error_nombre_usuario" class="form-text text-gray">{{error_nombre_usuario}}</small>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <!-- Form -->
+                <div class="mb-4">
+                    <label for="exampleInputEmail6">Rol</label>
+                    <select class="form-select" id="rol_usuario" aria-label="Default select example" name="rol_usuario">
+                        <option selected>Seleccione</option>
+                        <option value="Carnetizador">Carnetizador</option>
+                        <option  value="Administrador">Administrador</option>
+                    </select>
+                </div>
+                                        <script>
+                         document.querySelector('#formUser').addEventListener('submit', function(event) {
+                         var selectedOption = document.getElementById('rol_usuario').value;
+                         if (selectedOption === '' || selectedOption === 'Seleccione') {
+                             alert('Seleccione un rol de usuario.');
+                          event.preventDefault(); // Evita que el formulario se envíe
+                          }
+                            });
+                          </script>
+            </div>
+        </div>
+        <button type="submit" class="btn bg-gradient-primary my-1 me-1" name="Aceptar" value="{{Aceptar}}">Aceptar</a>
+
+        <!-- <div class="row mb-4 mb-lg-5">
+                <button class="btn btn-primary" type="submit" style="position: inherit;">Crear</button>
+        </div> -->
+    </div>
+</form>
+</div>
+{% endblock content %}

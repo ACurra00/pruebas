@@ -1,0 +1,191 @@
+{% extends "templates_visitantes/pages/page_index.html" %}
+
+
+{% block title %}
+    <title>Categoria del carnet visitante</title>
+{% endblock %}
+
+{% block content %}
+    <div class="cashier-content-area mt-[30px] px-7">
+        <div class="cashier-salereturns-area bg-white p-7 custom-shadow rounded-lg pt-5 mb-5 shadow-sm">
+            <h4 class="text-[20px] font-bold text-heading mb-9">Categoria del carnet visitante</h4>
+            <div class="cashier-managesale-top-btn default-light-theme mb-7">
+                <button class="mb-1 open hover:opacity-80 hover:scale-125 shadow-md">
+                    <iconify-icon icon="ic:baseline-plus" class="pr-3"></iconify-icon>
+                    Añadir categoria
+                </button>
+            </div>
+
+            <div class="cashier-table-header-search-area">
+                <div class="grid grid-cols-12 gap-x-5 mb-7 pb-0.5">
+                    <div class="md:col-span-6 col-span-12">
+                        <div class="cashier-table-header-search relative maxSm:mb-4">
+                            <input type="text" placeholder="Buscar en la lista">
+                            <span><iconify-icon icon="material-symbols:search"></iconify-icon></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="-m-1.5 overflow-x-auto border-2">
+                    <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div class="overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead>
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipo de categoria
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descripción
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acción
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                {% for categoria in categories -%}
+                                    <tr>
+                                        <td class="px-6 py-1.5  whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                            {{ categoria.tipo_categoria }}
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                            {{ categoria.descripcion }}
+                                        </td>
+                                        <td class="px-6 py-1.5 whitespace-nowrap text-center text-sm font-medium flex gap-1">
+                                            <a href="/edit_category/{{ categoria.id }}">
+                                                <div class="openA hover:opacity-80 cursor-pointer">
+                                                    <iconify-icon icon="material-symbols:edit-outline"
+                                                                  style="color: red;"></iconify-icon>
+                                                </div>
+                                            </a>
+                                            <a href="/delete_category/{{ categoria.id }}">
+                                                <div class="hover:opacity-80 cursor-pointer">
+                                                    <iconify-icon icon="material-symbols:delete-outline"
+                                                                  style="color: red;"></iconify-icon>
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- popup modals  ANNADIR-->
+    <div style="display: none;" class="pop-outer">
+        <div class="relative md:h-auto">
+            <div class="cashiar-dialog-content">
+                <div class="popup-body">
+                    <div class="cashier-popup-inner">
+                        <div class="cashier-popup-header relative mb-11">
+                            <div class="cashier-popup-header-title">
+                                <h4 class="text-[20px] text-heading font-bold">Añadir categoria</h4>
+                            </div>
+                            <div class="cashier-popup-header-close absolute -top-0 right-0">
+                                <div class="default-light-theme">
+                                    <a href="javascript:void(0)" class="close">
+                                        <iconify-icon icon="fa6-solid:xmark" class="mt-2 text-red-700"></iconify-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <form action="/add" method="post" class="grid grid-cols-12 gap-x-7 maxSm:gap-x-0">
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Tipo de categoria</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <input name="tipo_categoria" type="text" placeholder="A">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 col-span-12">
+                                <div class="cashier-select-field mb-6">
+                                    <h5 class="text-[15px] text-heading font-semibold mb-3">Descripción</h5>
+                                    <div class="cashier-input-field-style">
+                                        <div class="single-input-field w-full">
+                                            <input name="descripcion" type="text" placeholder="Rectorado">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-12">
+                                <div class="cashier-popup-btn default-light-theme pt-1.5 hover:opacity-80">
+                                    <button type="submit" class="btn-primary">Crear categoria</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- popup modals  ACTUALIZAR-->
+    {% if c is defined %}
+        <div class="pop-outerA">
+            <div class="relative md:h-auto">
+                <div class="cashiar-dialog-content">
+                    <div class="popup-body">
+                        <div class="cashier-popup-inner">
+                            <div class="cashier-popup-header relative mb-11">
+                                <div class="cashier-popup-header-title">
+                                    <h4 class="text-[20px] text-heading font-bold">Actualizar categoria</h4>
+                                </div>
+                                <div class="cashier-popup-header-close absolute -top-0 right-0">
+                                    <div class="default-light-theme">
+                                        <a href="/categoria" class="closeA">
+                                            <iconify-icon icon="fa6-solid:xmark"
+                                                          class="mt-2 text-red-700"></iconify-icon>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <form action="/update_categoria/{{ c.id }}" method="post"
+                                  class="grid grid-cols-12 gap-x-7 maxSm:gap-x-0">
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Tipo de categoria</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <input name="tipo_categoria" value="{{ c.tipo_categoria }}" type="text"
+                                                       placeholder="A">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-6 col-span-12">
+                                    <div class="cashier-select-field mb-6">
+                                        <h5 class="text-[15px] text-heading font-semibold mb-3">Descripción</h5>
+                                        <div class="cashier-input-field-style">
+                                            <div class="single-input-field w-full">
+                                                <input name="descripcion" value="{{ c.descripcion }}" type="text"
+                                                       placeholder="Rectorado">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-12">
+                                    <div class="cashier-popup-btn default-light-theme pt-1.5 hover:opacity-80">
+                                        <button type="submit" class="btn-primary">Modificar categoria</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,354 @@
+{% extends "shared/base_homepages.html" %}
+<body>
+
+    {% block content %}
+
+    <main>
+
+        <!-- Hero -->
+        <section class="section-header overflow-hidden bg-primary text-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1 class="fw-bolder display-2">
+                            Carnet Cujae
+                        </h1>
+                        <h2 class="lead fw-normal text-muted mb-4 px-lg-10">
+                            Identifica fácilmente a tus trabajadores, estudiantes o visitantes.
+                        </h2>
+                        <!-- Button Modal -->
+                        <!-- <div class="d-flex justify-content-center align-items-center mb-5">
+                            <a href="#crear_carnet" class="btn btn-tertiary mb-3 mt-2 me-2 me-md-3 animate-up-2"><span
+                                    class="fas fa-th-large me-2"></span> <span class="d-none d-md-inline">
+                                        Crear Carnet
+                                    </span> <span class="d-md-none">Components</span></a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <figure class="position-absolute bottom-0 left-0 w-100 d-none d-md-block mb-n2">
+                <svg class="fill-white"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 185.4">
+                    <path d="M3000,0v185.4H0V0c496.4,115.6,996.4,173.4,1500,173.4S2503.6,115.6,3000,0z"></path>
+                </svg>
+            </figure>
+        </section>
+
+        <div class="section section-sm pb-0 mb-n4" id="crear_carnet">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <h3 class="text-center">Crear Carnet</h3>
+                </div>
+                <div style="text-align: center;">
+             <small style="color: #FF0000; font-size: 16px;"  type="error_no_existe" id="error_no_existe" name="error_no_existe" class="form-text text-gray">{{error_no_existe}}</small>
+            </div>
+            </div>
+        </div>
+
+        <div class="section section-md pb-0">
+            <div class="container">
+                <!-- Title -->
+                <div class="row">
+                    <div class="col">
+                        <h2 class="h5">Buscar persona por</h2>
+                    </div>
+                </div>
+                <!-- End of Title -->
+            </div>
+        </div>
+
+        <div class="section section-md pt-4">
+            <form method="post" id="buscarPersona">
+            <div class="container">
+                <div class="row mb-4 mb-lg-5">
+                    <div class="row mb-5 mb-lg-5">
+                    <div class="col-lg-4 col-sm-6">
+                        <!-- Form -->
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6" id="id_label_ci">Carnet de Identidad</label>
+                            <input type="text" pattern="^\d{11}$" title="El carnet debe estar conformado por 11 dígitos, no deje margen ni espacios en blanco" class="form-control" id="ciBuscarPersona" name="ciBuscarPersona" required>
+                            <small style="color: #FF0000; font-size: 16px;"  id="emailHelp" class="form-text text-gray">{{errorCI}}</small>
+                        </div>
+                        <!-- End of Form -->
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-3">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Área</label>
+
+                            <select type="form-select" class="form-control" id="areaBuscarPersona" name="areaBuscarPersona" aria-label="Default select example"  value="areaBuscarPersona" >
+
+                                <option selected>Seleccione</option>
+                                <script>
+                                    var list = "{{lista_areas}}";
+                                    console.log(list)
+                                    var arr = list.split(',');
+                                    var count  = JSON.parse("{{total_areas}}");
+                                    var select = document.getElementById('areaBuscarPersona');
+                                    for (var i = 0; i < count; i++){
+                                    select.options[select.options.length] = new Option(arr[i],arr[i]);
+                                    }
+                                </script>
+                            </select>
+                            <small style="color: #FF0000; font-size: 16px;"  id="emailHelp" class="form-text text-gray">{{errorArea}}</small>
+                        </div>
+                            <script>
+                         document.querySelector('form').addEventListener('submit', function(event) {
+                         var selectedOption = document.getElementById('areaBuscarPersona').value;
+                         if (selectedOption === '' || selectedOption === 'Seleccione') {
+                             alert('Por favor, seleccione una opción en el campo de Área.');
+                          event.preventDefault(); // Evita que el formulario se envíe
+                          }
+                            });
+                          </script>
+
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <!-- Form -->
+                        <div class="mb-3">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Carnet por Lotes</label>
+                            <select class="form-select" id="tipoBuscarPersona" aria-label="Default select example" onchange="carnet_x_lotes()" name="tipoBuscarPersona" value="tipoBuscarPersona">
+                                <!-- <option selected>Seleccione</option> -->
+                                <option value="carnet_x_lotes_on">Si</option>
+                                <option selected value="carnet_x_lotes_off">No</option>
+                            </select>
+                        <small style="color: #FF0000; font-size: 16px;"  id="emailHelp" class="form-text text-gray">{{errorTipo}}</small>
+                        </div>
+                        <!-- End of Form -->
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <label class="my-1 me-2" for="inlineFormCustomSelectPref">Tipo</label>
+                            <select class="form-select" id="tipoBuscarCarnet" aria-label="Default select example" onchange="carnet_x_Tipo()" name="tipoBuscarCarnet" value="tipoBuscarCarnet" disabled =True>
+                                <option selected>Seleccione</option>
+                                <option value="carnet_x_lotes_Estudiante">Estudiante</option>
+                                <option value="carnet_x_lotes_Docente">Docente</option>
+                                <option value="carnet_x_lotes_No_Docente"> No Docente</option>
+                            </select>
+                        <small style="color: #FF0000; font-size: 16px;"  id="emailHelp" class="form-text text-gray">{{errorFiltro}}</small>
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Estudiante Año</label>
+                                <select class="form-select" id="student_year" aria-label="Default select example" name="student_year" value="student_year" disabled>
+                                    <option selected>Seleccione</option>
+                                    <option value="carnet_x_lotes_one">1</option>
+                                    <option value="carnet_x_lotes_two">2</option>
+                                    <option value="carnet_x_lotes_three">3</option>
+                                    <option value="carnet_x_lotes_four">4</option>
+                                    <option value="carnet_x_lotes_five">5</option>
+                                </select>
+                            <small style="color: #FF0000; font-size: 16px;"  id="emailHelp" class="form-text text-gray">{{erroryear}}</small>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                <style>
+                    .container{
+                         display: inline-block;
+                    }
+                    #button_buscar{
+                        position: relative;
+                         z-index: 1;
+                    }
+                      #loading_busqueda {
+                        display: none;
+                        position: absolute;
+                        margin-left: 10px;
+                        top: 62%;
+                        left:100%;
+                        transform: translate(-50%, -50%);
+                        z-index: 2;
+                    }
+                </style>
+                <div class="container">
+                    <div class="row mb-4 mb-lg-5 justify-content-center">
+                        <button class="btn btn-primary" id="button_buscar" onClick="showLoadingBuscar()" type="submit"
+                                style="width: auto; height: auto;">Buscar
+                        </button>
+
+                        <div id="loading_busqueda">
+                            <h2>Cargando...</h2>
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+
+        <div class="section section-md">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="mb-5">
+                            <div class="mb-4">
+                                <span class="h5"></span>
+                            </div>
+                            <table class="table table-hover">
+                                <tr>
+                                    <!-- <th scope="col" >
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="defaultCheck1">Seleccionar Todo</label>
+                                            <input class="form-check-input" type="checkbox" value="seleccionar_todo" name="seleccionar_todo" id="seleccionar_todo" onchange="SeleccionarTodo()">
+                                        </div>
+                                    </th> -->
+                                    <th scope="col" id="class3">DNI</th>
+                                    <th scope="col" id="teacher3">Nombre</th>
+                                    <th scope="col" id="females3">Tipo de Persona</th>
+                                    <th scope="col">Año del estudiante</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                                <tr>
+                                    {% for user in page_obj%}
+                                    <!-- <td>
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="defaultCheck2">
+                                            <input class="form-check-input Checklist" type="checkbox" value="{{ user['cUJAEPersonDNI']}}"  name="checkpersonas" id="checkpersonas">
+                                        </div>
+                                    </td> -->
+                                    <td>{{ user['identification'] }}</td>
+                                    <!-- <td>{{ user }}</td> -->
+                                    <td>{{ user['name']}}</td>
+                                    {% if user['personType'] == "Student" -%}
+                                    <td>Estudiante</td>
+                                    <td>{{ user['studentYear'] }}</td>
+                                    {%- elif user['personType'] == "Worker" -%}
+                                    <td>Trabajador</td>
+                                    <td>-</td>
+                                    {%- endif %}
+                                     <td>
+                                         <form class="d-flex" action="/crear_carnet/{{area}}/{{ user['identification'] }}">
+                                        <button class="btn btn-primary crear-btn" id="btn3"  type="submit" style="position: inherit;">Crear</button>
+                                        </form>
+                                    </td>
+                                    <!-- <td><a href="" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                        Cambiar estado
+                                      </a></button></td>
+                                    <td><a href="" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                        Imprimir
+                                        </a></td> -->
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            <style>
+                           .crear-btn {
+                               width: auto; /* Ajusta el ancho automáticamente basado en el contenido */
+                                       padding: 5px 10px; /* Ajusta el relleno según sea necesario */
+                               font-size: 14px; /* Controla el tamaño del texto */
+                                }
+                    </style>
+                        </div>
+                           </div>
+                           <div>
+                           
+                            <span class="step-links"  >
+                                {% if page_obj.has_previous %}
+                                    <a href="?page=1&area2={{area}}">&laquo; first</a>
+                                    <a href="?page={{ page_obj.number-1}}&area2={{area}}&">  --previous  </a>
+                                {% endif %}
+                
+                                <span class="current">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                </span type="submit">
+                
+                                {% if page_obj.has_next %}
+                                    <a href="?page={{page_obj.number+1}}&area2={{area}}"> next++  </a>
+                                    <a href="?page={{page_obj.paginator.num_pages}}&area2={{area}}&"> last &raquo;</a>
+                                {% endif %}
+                            </span>
+                          </div>
+                </div>
+
+
+                </div>
+                {% if is_x_lotes %}
+                <style>
+                    #loading {
+                        display: none;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        z-index: 1000;
+                    }
+
+                    .section-md.pt-4 {
+                    margin-bottom: 0 !important;
+                    padding-bottom: 0 !important;
+                     }
+                    .section-md {
+                    margin-top: 0 !important;
+                     padding-top: 0 !important;
+                    }
+                </style>
+                <div class="section section-sm pb-0 mb-n4" id="botton_x_lotes">
+                    <div class="container">
+                        <div class="row justify-content-center">
+
+                            <form class="d-flex" action="/carnetXLotes/{{area}}/{{tipo}}/{{year}}">
+                            <button class="btn btn-primary" id="carnet_x_lotes" onClick="showLoading()" type="submit" style="position: inherit;">Crear solicitudes</button>
+                            </form>
+                            <div id="loading">
+                                <h2>Cargando...</h2>
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Cargando...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+        <!-- <div class="section section-md" style="display: none"> -->
+
+        </main>
+        {% include 'includes/footer.html' %}
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="{{url_for('static', path='js/homepage.js') }}"></script>
+
+    {% endblock %}
+  {% block javascripts %}
+<script type="text/javascript">
+function validarFormulario() {
+    const area = document.getElementById("areaBuscarPersona").value;
+    const carnet = document.getElementById("ciBuscarPersona").value.trim();
+    const porLote = document.getElementById("tipoBuscarPersona").value === "carnet_x_lotes_on";
+    const tipo = document.getElementById("tipoBuscarCarnet").value;
+    const studentYear = document.getElementById("student_year").value;
+
+    // Caso 1: Si NO es por lote, debe haber un área y un carnet válido (11 dígitos)
+    if (!porLote && area !== "Seleccione" && /^\d{11}$/.test(carnet)) {
+        return true;
+    }
+
+    // Caso 2: Si es por lote y el tipo es "Estudiante", debe seleccionarse un año
+    if (porLote && area !== "Seleccione" && tipo === "carnet_x_lotes_Estudiante" && studentYear !== "Seleccione") {
+        return true;
+    }
+
+    // Caso 3: Si es por lote y el tipo NO es "Estudiante", no necesita un año seleccionado
+    if (porLote && area !== "Seleccione"  && tipo !== "carnet_x_lotes_Estudiante") {
+        return true;
+    }
+
+    // Si no se cumplen las condiciones, mostrar alerta y retornar false
+
+    return false;
+}
+
+function showLoadingBuscar() {
+    const mostrar = validarFormulario();
+    if (mostrar) {
+        document.getElementById("loading_busqueda").style.display = "block";
+    }
+}
+</script>
+{% endblock javascripts %}
+</body>

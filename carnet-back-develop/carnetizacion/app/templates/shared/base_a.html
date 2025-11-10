@@ -1,0 +1,61 @@
+<!--
+=========================================================
+* Soft UI Dashboard - v1.0.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/soft-ui-dashboard/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+  <title>
+    Carnetizacion - {% block title %}{% endblock %} | CUJAE
+  </title>
+
+  <link href="{{url_for('static', path='css/fonts.css') }}" rel="stylesheet">
+  <link href="{{url_for('static', path='css/nucleo-icons.css') }}" rel="stylesheet">
+  <link href="{{url_for('static', path='css/nucleo-svg.css') }}" rel="stylesheet">
+  <script src="{{url_for('static', path='js/42d5adcbca.js') }}"></script>
+  <link href="{{url_for('static', path='css/soft-ui-dashboard.css') }}" rel="stylesheet">
+
+
+  <!-- Specific CSS goes HERE -->
+  {% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+<body class="g-sidenav-show bg-gray-100">
+
+  {% include "includes/sidebar.html" %}
+
+  <main class="main-content mt-4 border-radius-lg">
+
+    {% include "includes/navigation_admin.html" %}
+
+    {% block content %}{% endblock content %}
+
+  </main>
+
+
+
+
+  <!-- Specific JS goes HERE -->
+  {% block javascripts %}{% endblock javascripts %}
+
+  <!-- Github buttons -->
+
+
+</body>
+</html>

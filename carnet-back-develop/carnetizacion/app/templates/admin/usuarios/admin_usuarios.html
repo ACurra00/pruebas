@@ -1,0 +1,128 @@
+{% extends "shared/base_a.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h5>Usuarios</h5>
+            <div id="result" class="text-danger text-bold lead"></div>
+            <div class="nav-wrapper position-relative end-0">
+            <a href="/usuario_admin/form_usuario/" class="btn bg-gradient-primary my-1 me-1">Añadir</a>
+    </div>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Rol</th>
+                    <!--<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Activo</th>-->
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for usuario in lista_usuario %}
+                   {% if usuario.rol_usuario != "SuperAdmin" and usuario.nombre_usuario !=  nombre%}
+                  <tr>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{ usuario.nombre_usuario }}</h6>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+
+                            <h6 class="mb-0 text-sm">{{ usuario.rol_usuario }}</h6>
+                          </div>
+                        </div>
+                     </td>
+
+                    <!--<td>
+                        <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            {% if usuario.is_activo -%}
+                            <h6 class="mb-0 text-sm">Activo</h6>
+                            {%- else -%}
+                            <h6 class="mb-0 text-sm">No activo</h6>
+                            {%- endif %}
+                          </div>
+                        </div>
+                      </td>>
+
+
+
+                    <!-- <td class="align-middle text-center text-sm">
+                      <span class="badge badge-sm bg-gradient-success">Online</span>
+                    </td>
+                    <td class="align-middle text-center">
+                      <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
+                    </td> -->
+                    {% if not usuario.is_activo -%}
+                    <td class="align-middle">
+                        <form class="d-flex" action="/usuario_admin/form_usuario/{{usuario.id}}">
+                            <button class="btn bg-gradient-primary my-1 me-1" id="btn3"  type="submit" style="position: inherit;">Editar</button>
+                        </form>
+                    </td>
+                    <td class="align-middle">
+                      <button class="btn bg-gradient-primary my-1 me-1" onclick="confirm_delete_usuario({{usuario.id}})">Borrar</button>
+                    </td>
+                    {%- endif %}
+
+                  </tr>
+                  {%- endif %}
+                  {% endfor %}
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  {% endblock content %}
+
+  {% block javascripts %}
+<script type="text/javascript">
+      function confirm_delete_usuario(id) {
+        if (confirm('¿Estás seguro que deseas borrar este usuario?')) {
+            delete_usuario(id);
+        }
+    }
+
+    function delete_usuario(id){
+      console.log(id);
+        fetch('/usuarios/delete_usuario/'+id,{
+            method:'DELETE',})
+        .then(response => response.json())
+        .then(document.getElementById('result').innerHTML = "Refrescando...")
+        .then(data => document.getElementById('result').innerHTML = data.detail);
+        location.reload();
+        // return false;
+
+    }
+    // function OnSubtreeModified () {
+    //   //  alert ("The subtree that belongs to the container has been modified.");
+    //    console.log(fetch('/usuario_admin',{
+    //         method:'GET',}));
+    // }
+
+    // function Init () {
+    //   console.log("Init");
+    //   result = document.getElementById ("result");
+    //   if (result.addEventListener) {
+    //     result.addEventListener ('DOMSubtreeModified', OnSubtreeModified, false);
+    //   }
+    // }
+
+</script>
+{% endblock javascripts %}

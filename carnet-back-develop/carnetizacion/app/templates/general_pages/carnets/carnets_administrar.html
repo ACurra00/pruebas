@@ -1,0 +1,333 @@
+{% extends "shared/base_homepages.html" %}
+
+    {% block content %}
+    <section class="section-header overflow-hidden pt-7 pt-lg-6 pb-9 pb-lg-0 bg-primary text-white">
+    </section>
+
+    <div class="section section-sm pb-0 mb-n4">
+      <div class="container">
+          <div class="row justify-content-center">
+              <h1 class="text-center">Administrar Carnets</h3>
+          </div>
+                     <div style="text-align: center;">
+             <small style="color: #FF0000; font-size: 16px;" type="error_nada" id="error_nada" name="error_nada" class="form-text text-gray">{{error_nada}}</small>
+            </div>
+      </div>
+  </div>
+
+    <div class="section section-md">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-lg-12">
+                  <div class="mb-5">
+                      <div class="mb-4">
+                        <div id="result" class="text-bold lead"></div>
+                      </div>
+                      <form>
+                        <label for="filtro1">Buscar por CI: </label>
+                        <input type="text"  pattern="^\d{11}$" title="El carnet debe estar conformado por 11 dígitos" name="filtro1" id="filtro1">
+
+                        <label for="filtro3"> Buscar por Nombre</label>
+                        <input type="text" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo debe tener letras" name="filtro3" id="filtro3">
+                        <div>
+
+                        </div>
+                        <label for="filtro4"> Cambiar Estado (Cambiar por Lotes)</label>
+                        <input type="checkbox" name="filtro4" id="filtro4" onclick="change()">
+                        <div>
+
+                        </div>
+                        <label for="filtro5">Área</label>
+                        <select id="areaBuscarChange" name="areaBuscarChange"  value="areaBuscarChange" disabled>
+                            <option selected>Seleccione</option>
+                            <script>
+                                var list = "{{lista_areas}}";
+                                console.log(list)
+                                var arr = list.split(',');
+                                var count  = JSON.parse("{{total_areas}}");
+                                var select = document.getElementById('areaBuscarChange');
+                                for (var i = 0; i < count; i++){
+                                select.options[select.options.length] = new Option(arr[i],arr[i]);
+                                }
+                            </script>
+                        </select>
+
+                        <label for="filtro6">Tipo</label>
+                        <select onchange="carnet_x_Tipo_Change()" id = "tipoBuscarChange" name="tipoBuscarChange" value="tipoBuscarChange" disabled>
+                            <option selected>Seleccione</option>
+                            <option value="change_Seminterno">Seminterno</option>
+                            <option value="change_Externo">Externo</option>
+                            <option value="change_Becado">Becado Nacional</option>
+                            <option value="change_Docente">Docente</option>
+                            <option value="change_No_Docente"> No Docente</option>
+                        </select>
+                        <!-- 
+                        <label for="filtro7"> Año Estudent</label>
+                        <select id="student_year_change" name="student_year_change" value="student_year_change" disabled>
+                            <option selected>Seleccione</option>
+                            <option value="change_one">1</option>
+                            <option value="change_lotes_two">2</option>
+                            <option value="change_lotes_three">3</option>
+                            <option value="change_lotes_four">4</option>
+                            <option value="change_lotes_five">5</option>
+                        </select>
+                        -->
+                        <div>
+
+                        </div>
+                          <button class="btn btn-primary" id ="button_buscar" type="submit" style="position: inherit;">Buscar</button>
+
+                    </form>
+                    <script>
+                              const form = document.querySelector("form");
+
+                              form.addEventListener("submit", (event) => {
+                                  event.preventDefault();
+                                  const filtro1 = document.querySelector("#filtro1").value;
+                                  //const filtro2 = document.querySelector("#filtro2").value;
+                                  const filtro3 = document.querySelector("#filtro3").value;
+
+                                  const filtro4 =document.querySelector("#areaBuscarChange").value;
+                                  const filtro5 =document.querySelector("#tipoBuscarChange").value;
+                                  //const filtro6 =document.querySelector("#student_year_change").value;
+
+                                  const url = `/carnets/administrar/?filtro1=${filtro1}&filtro3=${filtro3}&filtro4=${filtro4}&filtro5=${filtro5}`;
+                                  window.location.href = url;
+                              });
+                    </script>
+
+                  <div>
+                    <table class="table table-hover" name = "table1" id="table1">
+                        <tr>
+                            <th scope="col" id="class3">Folio</th>
+                            <th scope="col" id="teacher3">Carnet de identidad</th>
+                            <th scope="col" id="teacher3">Nombre</th>
+                            <th scope="col" id="females3">Área</th>
+                            <th scope="col">Rol</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                        <tr>
+                            <script>
+                                var count = 0
+                                var id_carnet_mio="";
+                            </script>
+                          {% for carnet in carnets %}
+                            <td>{{ carnet.folio }}</td>
+                            <td id="carnet">{{ carnet.person_ci }}</td>
+                            <script>
+                                id_carnet_mio = document.querySelector("#carnet").innerHTML
+                                count = count +1
+                            </script>
+                            {% for person in persons %}
+                              {% if carnet.person_ci == person.ci -%}
+                                <td>{{ person.nombre }}</td>
+                                <td id="id_area">{{ person.area }}</td>
+                                <script>
+                                    var id_area = document.querySelector("#id_area").innerHTML
+                                </script>
+                                <td id="id_rol">{{ person.rol }}</td>
+                                <script>
+                                    var id_rol = document.querySelector("#id_rol").innerHTML
+                                </script>
+                              {%- endif %}
+                             {% endfor %}
+                             <td>{{ carnet.estado }}</td>
+                            <td>{{ carnet.fecha }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                  </div>
+
+                  <div>
+
+                  </div>
+                  {% if carnets %}
+                  <form id ="estado">
+                    <label> Cambiar Estado</label>
+                    <select type="form-select"  id="estado2" name="estado"   value="estado" onchange="carg(this);">
+                        <option selected>Seleccione</option>
+                        <option>Solicitado</option>
+                        <option>Hecho</option>
+                        <option>Entregado</option>
+                        <option>Eliminado</option>
+                        <option>Con Errores</option>
+                        </select>
+                    <label for="input">      Tipo de Error   </label>
+                        <input id="input" type="text" disabled>
+                        <style>
+                            #loading {
+                            display: none;
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            z-index: 1000;
+                        }
+                         </style>
+
+                        <button class="btn btn-primary" id="administrar_estado" type="submit" style="width: auto; height: auto; ">Cambiar</button>
+
+                    </form>
+
+                    <script>
+
+                        const form2 = document.querySelector("#estado");
+                        const ci = id_carnet_mio;
+                        const area = id_area;
+                        const rol = id_rol;
+
+
+                        form2.addEventListener("submit", (event) => {
+                            event.preventDefault();
+                            const carnet_id = ci;
+                            const estado = document.querySelector("#estado2").value;
+                            const error = document.querySelector("#input").value;
+                            var url=""
+                            if (count ==1){
+                                url = `/carnets/administrar/?estado=${estado}&carnet_id=${carnet_id}&error=${error}`;
+                            }else{
+                                url = `/carnets/administrar/?estado=${estado}&area=${area}&error=${error}&rol=${rol}`;
+                            }
+
+
+                            window.location.href = url;
+                        });
+                        var input = document.getElementById('input');
+
+                        function carg(elemento) {
+                        d = elemento.value;
+                            if(d == "Con Errores"){
+                                input.disabled = false;
+                                input.value = ""
+                            }else{
+                                input.disabled = true;
+                                input.value = ""
+                            }
+                        }
+                    </script>
+
+
+
+                </div>
+            </div>
+                </form>
+                {% endif %}
+                <style>
+                    #prueba {
+              padding: 50px;
+              margin: 30px;
+              /* other styling */
+              background-color: #ffffff;
+              border-radius: 10px;
+              color: white;
+              font-family: Arial;
+            }
+                     </style>
+                     <div id = "prueba">
+
+
+                     </div>
+          </div>
+
+      </div>
+
+  </div>
+
+  <div>
+
+
+
+
+
+  </div>
+<script>
+
+function carnet_x_Tipo_Change(){
+    /*tipoPersona = document.getElementById("tipoBuscarChange")
+    if(tipoPersona.disabled== false){
+        if(tipoPersona.selectedIndex == 0){
+            console.log("Se selecciono (0) se debe Habilitar 4");
+            // no se ha seleccionado nada
+            document.getElementById("student_year_change").disabled = true;
+            document.getElementById("student_year_change").value = "Seleccione";
+
+        }else if(tipoPersona.selectedIndex == 1){
+            console.log("Se selecciono (1) se debe deshabilitar 4");
+           // se seleciono el estudiante
+           document.getElementById("student_year_change").disabled = false;
+
+        }else if(tipoPersona.selectedIndex == 2){
+            console.log("Se selecciono (2) se debe deshabilitar 4");
+           // se selecciono al docente
+           document.getElementById("student_year_change").disabled = true;
+           document.getElementById("student_year_change").value = "Seleccione";
+        }else if(tipoPersona.selectedIndex == 3){
+            console.log("Se selecciono (3) se debe deshabilitar 4");
+            document.getElementById("student_year_change").disabled = true;
+            document.getElementById("student_year_change").value = "Seleccione";
+           // se selecciono al no docente
+        }
+    }*/
+}
+function change(){
+    if(document.getElementById("filtro4").checked){ // es true
+
+        document.getElementById("filtro1").disabled=true
+        document.getElementById("filtro3").disabled=true
+
+        document.getElementById("filtro1").value=""
+        document.getElementById("filtro3").value=""
+
+
+        document.getElementById("areaBuscarChange").disabled=false
+        document.getElementById("tipoBuscarChange").disabled=false
+
+        //document.getElementById("estado2").disabled=true
+        //document.getElementById("estado2").value="Entregado"
+
+
+    }else{
+
+        document.getElementById("filtro1").disabled=false
+        document.getElementById("filtro3").disabled=false
+
+        document.getElementById("filtro1").value=""
+        document.getElementById("filtro3").value=""
+
+        document.getElementById("areaBuscarChange").disabled=true
+        document.getElementById("tipoBuscarChange").disabled=true
+        //document.getElementById("student_year_change").disabled=true
+
+
+    }
+}
+function showLoading() {
+    document.getElementById("loading").style.display = "block";
+}
+function  validate(){
+           document.querySelector('button[type="submit"]').addEventListener('click', function(event) {
+                             event.preventDefault(); // Evita que el formulario se envíe automáticamente
+                                 var selectedOption = document.getElementById('areaBuscarChange').value;
+                                 var selectedType = document.getElementById('tipoBuscarChange').value;
+                                   var cambiarEstadoPorLotes = document.getElementById('filtro4');
+                                 if (cambiarEstadoPorLotes.checked) {
+
+
+
+                                 if (selectedOption === '' || selectedOption === 'Seleccione') {
+                                     alert('Por favor, seleccione una opción en el campo de Área.');
+                                     return; // Evita que el formulario se envíe si no se ha seleccionado una área
+                                     }
+                                  if (selectedType === '' || selectedType === 'Seleccione') {
+                                     alert('Por favor, seleccione una opción en el campo de Tipo.');
+                                     return; // Evita que el formulario se envíe si no se ha seleccionado una área
+                                     }
+                                  }
+                                 form.submit();
+                             });
+}
+</script>
+  {% include 'includes/footer.html' %}
+  {% endblock %}

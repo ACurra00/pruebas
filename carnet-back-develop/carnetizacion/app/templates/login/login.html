@@ -1,0 +1,73 @@
+{% extends "shared/base.html" %}
+
+{% block stylesheets %}
+
+    <link href="{{ url_for('static', path='css/nucleo-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='css/nucleo-svg.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='css/soft-ui-dashboard.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='css/fonts.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', path='js/42d5adcbca.js') }}"></script>
+
+{% endblock stylesheets %}
+{% block content %}
+    <section>
+        <div class="page-header section-height-75">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+                        <div class="card card-plain mt-8">
+                            <div class="card-header pb-0 text-left bg-transparent">
+                                <h3 class="font-weight-bolder text-info text-gradient">Bienvenido</h3>
+                                <p class="mb-0">Ingrese su usuario y contraseña para iniciar sesión</p>
+                                {% for error in errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+
+                                {% if msg %}
+                                    <div class="badge bg-success text-wrap font-weight-bold" style="font-size: large;">
+                                        {{ msg }}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                            <div class="card-body">
+                                <form role="form text-left" method="POST">
+                                    <label>Usuario</label>
+                                    <div class="mb-3">
+                                        <input type="username" name="username" value="{{ username }}"
+                                               class="form-control" placeholder="Usuario" aria-label="Email"
+                                               aria-describedby="email-addon">
+                                    </div>
+                                    <label>Contraseña</label>
+                                    <div class="mb-3">
+                                        <input type="password" name="password" value="{{ password }}"
+                                               class="form-control" placeholder="Contraseña" aria-label="Password"
+                                               aria-describedby="password-addon" minlength="1">
+                                    </div>
+                                    <div class="text-center col-span-6">
+                                        <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Iniciar
+                                            Sesión
+                                        </button>
+                                    </div>
+                                </form>
+                                <a href="/portal" class="text-center">
+                                    <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">
+                                        Volver al portal
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+                            <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
+                                 style="background-image:url('/static/image/login.jpg')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock content %}

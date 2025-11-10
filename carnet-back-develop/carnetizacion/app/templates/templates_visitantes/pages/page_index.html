@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<meta charset="utf-8">
+<meta name="viewport" content="width-device-width, initial-scale=1.0">
+
+<link href="{{ url_for('static', path='/css/tailwind.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', path='/css/css_template_tailwind/preloader.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', path='/css/css_template_tailwind/font-awesome-pro.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', path='/css/css_template_tailwind/metisMenu.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', path='/css/css_template_tailwind/swiper-bundle.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', path='/css/css_template_tailwind/nice-select.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', path='/css/css_template_tailwind/main.css') }}" rel="stylesheet">
+
+
+<title>Control de acceso CUJAE</title>
+<link rel="icon" href="/static/image/logo.png">
+
+<script src="{{ url_for('static', path='/js/js_template_tailwind/tailwind-config.js') }}"></script>
+</head>
+
+<body class="bg-bodyBg">
+<script id="__bs_script__">//<![CDATA[
+document.write("<script async src='/browser-sync/browser-sync-client.js?v=2.27.10'><\/script>".replace("HOST", location.hostname));
+//]]></script>
+
+<main>
+    <div class="cashier-dashboard-area">
+        {#        SIDEBAR#}
+        {% include "templates_visitantes/pages/components/sidebar.html" %}
+
+        {#        DASHBOARD#}
+        <div class=" cashier-dashboard-main bg-gray-100">
+            {#            NAVBAR#}
+            {% include "templates_visitantes/pages/components/navbar.html" %}
+
+            {#            AQUI VA EL CONTENTIDO A PARTIR DEL MENU#}
+            {% block content %}
+
+            {% endblock %}
+            {#            FOOTER#}
+            {% include "templates_visitantes/pages/components/footer.html" %}
+        </div>
+
+    </div>
+</main>
+
+<!-- pre loader area start -->
+<div id="loading">
+    <div id="loading-center">
+        <div id="loading-center-absolute">
+            <div class="loading-icon text-center flex flex-col items-center justify-center">
+                <img src="/static/image/logo_cujae.png" alt="Cashiar" style="height: 15rem">
+                <img class="loading-logo" src="/static/image/ilustraciones/logo/preloader.svg" alt="img">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- pre loader area end -->
+
+
+<script src="{{ url_for('static', path='/js/js_template_tailwind/vendor/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ url_for('static', path='/js/js_template_tailwind/metisMenu.js') }}"></script>
+<script src="{{ url_for('static', path='/js/js_template_tailwind/jquery.nice-select.js') }}"></script>
+<script src="{{ url_for('static', path='/js/js_template_tailwind/swiper-bundle.min.js') }}"></script>
+<script src="{{ url_for('static', path='/js/js_template_tailwind/apexcharts.js') }}"></script>
+<script src="{{ url_for('static', path='/js/js_template_tailwind/main.js') }}"></script>
+
+<script src="{{ url_for('static', path='/js/js_template_tailwind/iconify-icon.min.js') }}"></script>
+
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+</body>
+
+</html>
+
+
+
+
+

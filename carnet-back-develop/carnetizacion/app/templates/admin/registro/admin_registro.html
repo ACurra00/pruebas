@@ -1,0 +1,142 @@
+{% extends "shared/base_homepages.html" %}
+
+{% block content %}
+<section class="section-header overflow-hidden pt-7 pt-lg-6 pb-9 pb-lg-0 bg-primary text-white">
+</section>
+
+<div class="section section-sm pb-0 mb-n4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <h1 class="text-center">Registro de acciones de los usuarios</h3>
+        </div>
+        <div style="text-align: center;">
+            <small style="color: #FF0000; font-size: 16px;" type="error_nada" id="error_nada" name="error_nada"
+                   class="form-text text-gray">{{error_nada}}</small>
+        </div>
+    </div>
+</div>
+
+<div class="section section-md">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="mb-5">
+                    <div class="mb-4">
+                        <div id="result" class="text-bold lead"></div>
+                    </div>
+                    <form id="filtro" class="row g-2 align-items-center">
+                        <div class="col-md-3">
+                            <label for="filtro1" class="form-label">Filtrar por usuario: </label>
+                            <input type="text" class="form-control" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"
+                                   title="Solo debe tener letras" name="filtro1" id="filtro1">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="filtro2" class="form-label">Fecha inicial</label>
+                            <input type="date" class="form-control" name="filtro2" id="filtro2">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="filtro3" class="form-label">Fecha final</label>
+                            <input type="date" class="form-control" name="filtro3" id="filtro3">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="filtro4" class="form-label">Filtrar por tipo</label>
+                            <select class="form-select" id="filtro4" name="filtro4">
+                                <option selected>Seleccione</option>
+                                <option value="Autenticarse">Autenticarse</option>
+                                <option value="Cerrar sesión">Cerrar sesión</option>
+                                <option value="Imprimir carnet">Imprimir carnet</option>
+                                <option value="Crear carnet">Crear carnet</option>
+                                <option value="Gestionar tipo de motivo">Gestionar tipo de motivo</option>
+                                <option value="Registrar folios">Registrar folios</option>
+                                <option value="Gestionar usuarios">Gestionar usuarios</option>
+                                <option value="Gestionar tipo de motivo">Gestionar tipo de motivo</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 d-flex align-self-end">
+                            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                        </div>
+                    </form>
+                    <script>
+                        const form = document.querySelector("#filtro");
+
+                        form.addEventListener("submit", (event) => {
+                            event.preventDefault();
+                            const filtro1 = document.querySelector("#filtro1").value;
+                            const filtro2 = document.querySelector("#filtro2").value;
+                            const filtro3 = document.querySelector("#filtro3").value;
+                            const filtro4 = document.querySelector("#filtro4").value;
+                            const today = new Date().toISOString().split("T")[0];
+
+                            if ((filtro2 && !filtro3) || (!filtro2 && filtro3)) {
+                                alert("Debes completar ambas fechas para filtrar por rango.");
+                                return;
+                            }
+
+                            // Validar que fechaInicio no sea mayor que fechaFin
+                            if (filtro2 && filtro3 && filtro2 > filtro3) {
+                                alert("La fecha inicial no puede ser mayor que la fecha final.");
+                                return;
+                            }
+
+                            // Validar que ninguna fecha sea mayor que hoy
+                            if ((filtro2 && filtro3 > today) || (filtro3 && filtro2 > today)) {
+                                alert("Las fechas no pueden ser mayores a la fecha actual.");
+                                return;
+                            }
+
+                            const url = `/registro_admin/?filtro1=${filtro1}&filtro2=${filtro2}&filtro3=${filtro3}&filtro4=${filtro4}`;
+                            window.location.href = url;
+                        });
+                    </script>
+                    <table class="table table-hover" name="table1" id="table1">
+                        <tr>
+                            <th scope="col" id="class3">Usuario</th>
+                            <th scope="col" id="teacher3">Acción</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Tipo de acción</th>
+                        </tr>
+                        {% for registro in page_obj %}
+                        <tr>
+                            <td>{{ registro.username }}</td>
+                            <td>{{ registro.accion }}</td>
+                            <td>{{ registro.fecha }}</td>
+                            <td>{{ registro.tipo }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            {% set filtro_params = "&filtro1=" ~ request.query_params.get('filtro1', '') ~
+            "&filtro2=" ~ request.query_params.get('filtro2', '') ~
+            "&filtro3=" ~ request.query_params.get('filtro3', '') ~
+            "&filtro4=" ~ request.query_params.get('filtro4', '') %}
+            <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1{{ filtro_params }}">&laquo; first</a>
+            <a href="?page={{ page_obj.number-1 }}{{ filtro_params }}">--previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.number+1 }}{{ filtro_params }}">next++</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{{ filtro_params }}">last &raquo;</a>
+        {% endif %}
+    </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+{% endblock %}
+
+{% block javascripts %}
+{% endblock javascripts %}

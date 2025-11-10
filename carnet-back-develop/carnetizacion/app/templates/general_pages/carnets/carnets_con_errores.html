@@ -1,0 +1,108 @@
+{% extends "shared/base_homepages.html" %}
+
+    {% block content %}
+    <section class="section-header overflow-hidden pt-7 pt-lg-6 pb-9 pb-lg-0 bg-primary text-white">
+    </section>
+
+    <div class="section section-sm pb-0 mb-n4">
+      <div class="container">
+          <div class="row justify-content-center">
+              <h1 class="text-center">Carnets Con Error</h3>
+          </div>
+            <div style="text-align: center;">
+             <small style="color: #FF0000; font-size: 16px;" type="error_nada" id="error_nada" name="error_nada" class="form-text text-gray">{{error_nada}}</small>
+            </div>
+      </div>
+  </div>
+
+    <div class="section section-md">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-lg-12">
+                  <div class="mb-5">
+                      <div class="mb-4">
+                        <div id="result" class="text-bold lead"></div>
+                      </div>
+                      <form>
+                        <label for="filtro1">Buscar por CI: </label>
+                        <input type="text" pattern="^\d{11}$" title="El carnet debe estar conformado por 11 dígitos, no deje margen ni espacios en blanco" name="filtro1" id="filtro1">
+
+                        <label for="filtro2"> Buscar por Área</label>
+                        <input type="text" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo debe tener letras" name="filtro2" id="filtro2">
+
+                        <label for="filtro3"> Buscar por Nombre</label>
+                        <input type="text" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo debe tener letras" name="filtro3" id="filtro3">
+                
+                        <button type="submit">Filtrar</button>
+                    </form>
+                    <script>
+                              const form = document.querySelector("form");
+
+                              form.addEventListener("submit", (event) => {
+                                  event.preventDefault();
+                                  const filtro1 = document.querySelector("#filtro1").value;
+                                  const filtro2 = document.querySelector("#filtro2").value;
+                                  const filtro3 = document.querySelector("#filtro3").value;
+                                  const url = `/carnets/errores/?filtro1=${filtro1}&filtro2=${filtro2}&filtro3=${filtro3}`;
+                                  window.location.href = url;
+                              });
+                    </script>
+                      <table class="table table-hover">
+                          <tr>
+                              <th scope="col" id="class3">Carnet de identidad</th>
+                              <th scope="col" id="class3">Nombre</th>
+                              <th scope="col" id="females3">Area</th>
+                              <th scope="col">Tipo de Error</th>
+                              <th scope="col">Error</th>
+                              <th scope="col">Fecha</th>
+                          </tr>
+                          <tr>
+                            {% for carnet in page_obj %}
+                              <td>{{ carnet.persona_ci }}</td>
+                              <td>{{ carnet.nombre_con_error}}</td>
+                              <td>{{ carnet.area_con_error}}</td>
+                              <td>{{ carnet.error}}</td>
+                              <td>{{ carnet.error_simple }}</td>
+                              <td>{{ carnet.fecha_error }}</td>
+                          </tr>
+                          {% endfor %}
+                      </table>
+                  </div>
+                     </div>
+                     <div class="pagination">
+                      <span class="step-links">
+                          {% if page_obj.has_previous %}
+                              <a href="?page=1">&laquo; first</a>
+                              <a href="?page={{ page_obj.number-1}}">  --previous  </a>
+                          {% endif %}
+          
+                          <span class="current">
+                              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                          </span>
+          
+                          {% if page_obj.has_next %}
+                              <a href="?page={{page_obj.number+1}}"> next++  </a>
+                              <a href="?page={{page_obj.paginator.num_pages}}"> last &raquo;</a>
+                          {% endif %}
+                      </span>
+                  </div>
+                  <div>
+                     
+                  </div>
+                  <div>
+
+                  </div>
+                          <!--Aqui lo que borre-->
+                <script>
+                        
+                </script>
+          </div>
+      </div>
+  </div>
+<script>
+function showLoading() {
+    document.getElementById("loading").style.display = "block";
+}
+</script>
+  {% include 'includes/footer.html' %} 
+  {% endblock %}

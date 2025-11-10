@@ -1,0 +1,290 @@
+{% extends "shared/base_homepages.html" %}
+
+    {% block content %}
+    <section class="section-header overflow-hidden pt-7 pt-lg-6 pb-9 pb-lg-0 bg-primary text-white">
+    </section>
+
+    <div class="section section-sm pb-0 mb-n4">
+      <div class="container">
+          <div class="row justify-content-center">
+              <h1 class="text-center">Carnets Solicitados</h3>
+          </div>
+             <div style="text-align: center;">
+             <small style="color: #FF0000; font-size: 16px;" type="error_nada" id="error_nada" name="error_nada" class="form-text text-gray">{{error_nada}}</small>
+            </div>
+      </div>
+  </div>
+
+    <div class="section section-md">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-lg-12">
+                  <div class="mb-5">
+                      <div class="mb-4">
+                        <div id="result" class="text-bold lead"></div>
+                      </div>
+                      <div class="d-flex text-center justify-content-end align-items-end">
+                        <form class="mb-4 col-lg-2" id="imprimirFotos">
+                          <button class="btn btn-primary" type="submit" style="position: inherit;">Descargar fotos</button>
+
+                            <script>
+                          const formFotos = document.querySelector("#imprimirFotos");
+                          console.log(formFotos)
+                          formFotos.addEventListener("submit", async (event) => {
+                           event.preventDefault();
+                           var imprimir = true;
+                           var foto = true;
+                           const url = `/carnets/solicitados/?imprimir=${imprimir}&foto=${foto}`;
+                           try {
+                             const response = await fetch(url, { method: 'GET' });
+                              if(response.ok){
+                           const blob = await response.blob();
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = 'final_archive.zip'; // Valor predeterminado
+                if (contentDisposition) {
+                    const match = contentDisposition.match(/filename="?(.+)"?/);
+                    if (match.length > 1) {
+                        filename = match[1];
+                    }
+                }
+                const urlPDF = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = urlPDF;
+                if (filename == 'final_archive.zip'){
+                        alert('No hay nada que imprimir.');
+                        return;
+                }
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                             }
+                           } catch (error) {
+                             console.error('Error al intentar imprimir:', error);
+                        }
+                        });
+                        </script>
+                        </form>
+
+                        <form class="mb-4 col-lg-2" id="imprimir">
+                          <button class="btn btn-primary" type="submit" style="position: inherit;">Descargar pdf</button>
+
+                       <script>
+                          const formPDF = document.querySelector("#imprimir");
+                          console.log(formPDF)
+                          formPDF.addEventListener("submit", async (event) => {
+                           event.preventDefault();
+                           var imprimir = true;
+                           const url = `/carnets/solicitados/?imprimir=${imprimir}`;
+                           try {
+                             const response = await fetch(url, { method: 'GET' });
+                              if(response.ok){
+                const blob = await response.blob();
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = 'final_archive.zip'; // Valor predeterminado
+                if (contentDisposition) {
+                    const match = contentDisposition.match(/filename="?(.+)"?/);
+                    if (match.length > 1) {
+                        filename = match[1];
+                    }
+                }
+                const urlPDF = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = urlPDF;
+                if (filename == 'final_archive.zip'){
+                        alert('No hay nada que imprimir.');
+                        return;
+                }
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                             }
+                           } catch (error) {
+                             console.error('Error al intentar imprimir:', error);
+                        }
+                        });
+                        </script>
+                        </form>
+                      </div>
+                      <form id="filtro">
+                        <label for="filtro1">Buscar por CI: </label>
+                        <input type="text" pattern="^\d{11}$" title="El carnet debe estar conformado por 11 dígitos, no deje margen ni espacios en blanco" name="filtro1" id="filtro1">
+                
+                        <label for="filtro2"> Buscar por Área</label>
+                        <input type="text" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo debe tener letras" name="filtro2" id="filtro2">
+
+                        <label for="filtro3"> Buscar por Nombre</label>
+                        <input type="text" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo debe tener letras" name="filtro3" id="filtro3">
+                
+                        <button type="submit">Filtrar</button>
+                    </form>
+                    <script>
+                              const form = document.querySelector("#filtro");
+
+                              form.addEventListener("submit", (event) => {
+                                  event.preventDefault();
+                                  const filtro1 = document.querySelector("#filtro1").value;
+                                  const filtro2 = document.querySelector("#filtro2").value;
+                                  const filtro3 = document.querySelector("#filtro3").value;
+                                  const url = `/carnets/solicitados/?filtro1=${filtro1}&filtro2=${filtro2}&filtro3=${filtro3}`;
+                                  window.location.href = url;
+                              });
+                    </script>
+                      <table class="table table-hover" name = "table1" id="table1">
+                          <tr>
+                              <!-- <th scope="col" >
+                                  <div class="form-check">
+                                      <label class="form-check-label" for="defaultCheck1">Seleccionar Todo</label>
+                                      <input class="form-check-input" type="checkbox" value="seleccionar_todo" name="seleccionar_todo" id="seleccionar_todo" onchange="SeleccionarTodo()">
+                                  </div>
+                              </th> -->
+                              <th scope="col" id="class3">Folio</th>
+                              <th scope="col" id="teacher3">Carnet de identidad</th>
+                              <th scope="col" id="teacher3">Nombre</th>
+                              <th scope="col" id="females3">Area</th>
+                              <th scope="col">Rol</th>
+                              <th scope="col">Tipo de motivo</th>
+                              <th scope="col">Comprobante</th>
+                              <th scope="col">Fecha</th>
+                              <th scope="col"></th>  <!--AnadiEsto-->
+                              <!-- <th scope="col"></th>
+                              <th scope="col"></th> -->
+                          </tr>
+                          <tr>
+                            {% for carnet in page_obj %}
+                              <td>{{ carnet.folio }}</td>
+                              <td>{{ carnet.person_ci }}</td>
+                              {% for person in persons %}
+                                {% if carnet.person_ci == person.ci -%}
+                                  <td>{{ person.nombre }}</td>
+                                  <td>{{ person.area }}</td>
+                                  <td>{{ person.rol }}</td>
+                                {%- endif %}
+                               {% endfor %}
+                               {% for motivo in motivos %}
+                                  {% if carnet.tipo_motivo_id == motivo.id_motivo -%}
+                                    <td>{{ motivo.nombre_motivo }}</td>
+                                  {%- endif %}
+                                {% endfor %}  
+                              <td>{{ carnet.comprobante_motivo }}</td>
+                              <td>{{ carnet.fecha }}</td>
+                              <td> <button class="btn btn-primary imprimir-btn" id="{{ carnet.person_ci }}" data-carnet-id="{{ carnet.person_ci }}" type="submit" style="position: inherit;">Descargar</button>
+
+                  <script>
+                          var button2 = document.getElementById("{{ carnet.person_ci }}");
+                          console.log(button2)
+                          button2.addEventListener('click', async (event) => {
+                          event.preventDefault();
+                          const carnetId = event.target.getAttribute('data-carnet-id');
+                          var imprimir = true;
+                          const url = `/carnets/solicitados/?imprimir=${imprimir}&carnet_id=${carnetId}`;
+                           try {
+                             const response = await fetch(url, { method: 'GET' });
+                              if(response.ok){
+                               const blob = await response.blob();
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = 'final_archive.zip'; // Valor predeterminado
+                if (contentDisposition) {
+                    const match = contentDisposition.match(/filename="?(.+)"?/);
+                    if (match.length > 1) {
+                        filename = match[1];
+                    }
+                }
+                const urlPDF = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = urlPDF;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                             }
+                           } catch (error) {
+                             console.error('Error al intentar imprimir:', error);
+                        }
+                        });
+                        </script> </td>
+                          </tr>
+                          {% endfor %}
+                      </table>
+                  </div>
+                     </div>
+                     <div class="pagination">
+                      <span class="step-links">
+                          {% if page_obj.has_previous %}
+                              <a href="?page=1">&laquo; first</a>
+                              <a href="?page={{ page_obj.number-1}}">  --previous  </a>
+                          {% endif %}
+          
+                          <span class="current">
+                              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                          </span>
+          
+                          {% if page_obj.has_next %}
+                              <a href="?page={{page_obj.number+1}}"> next++  </a>
+                              <a href="?page={{page_obj.paginator.num_pages}}"> last &raquo;</a>
+                          {% endif %}
+                      </span>
+                  </div>
+          </div>
+      </div>
+  </div>
+
+  {% include 'includes/footer.html' %} 
+  {% endblock %}
+
+{% block javascripts %}
+<!-- <script type="text/javascript">
+    function imprimir(){
+      return fetch('/imprimir/imprimir_carnets_solicitados_por_tipos',{
+            method:'POST',}).then(response => {
+              // document.getElementById('result').innerHTML = response["body"];
+              const blobUrl = window.URL.createObjectURL(response["body"]);
+              const link = document.createElement('a');
+              link.href = blobUrl;
+              link.setAttribute('download', `${filename}.${extension}`);
+              document.body.appendChild(link);
+              link.click();
+              link.parentNode.removeChild(link);
+
+    // clean up Url
+               window.URL.revokeObjectURL(blobUrl);
+          // a.download = 'carnets';
+          // document.body.appendChild(a);
+          // a.click();
+          // window.URL.revokeObjectURL(url);
+        return response["body"];
+      })
+      .then((blob) => URL.createObjectURL(blob))
+.then((href) => {
+  const a = document.createElement("a")
+  document.body.appendChild(a)
+  a.style = "display: none"
+  a.href = href
+  a.download = fileName
+  a.click()
+})
+        // fetch('/imprimir/imprimir_carnets_solicitados_por_tipos',{
+        //     method:'POST',})
+        // .then(response => location.reload())
+        // .then(document.getElementById('result').innerHTML = "Impresión Exitosa");
+        // .then(data => {
+        //   document.getElementById('result').innerHTML = data.detail;});
+        
+        // .then(blob => {
+        //   var file = window.URL.createObjectURL(blob);});
+        //   window.location.assign(file);
+          // const a = document.createElement('a');
+          // a.style.display = 'none';
+          // a.href = url;
+          // a.download = 'carnets';
+          // document.body.appendChild(a);
+          // a.click();
+          // window.URL.revokeObjectURL(url);
+          // window.open(file);
+        // });
+             
+    }
+
+</script> -->
+{% endblock javascripts %}

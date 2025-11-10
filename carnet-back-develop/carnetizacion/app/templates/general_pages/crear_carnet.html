@@ -1,0 +1,237 @@
+{% extends "shared/base_homepages.html" %}
+<!DOCTYPE html>
+<body>
+
+    {% block content %}
+
+    <main>
+
+        <!-- Hero -->
+        <section class="section-header overflow-hidden pt-7 pt-lg-6 pb-9 pb-lg-0 bg-primary text-white">
+        </section>
+
+        <div class="section section-sm pb-0 mb-n4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <h1 class="text-center">Formulario de Crear Carnet</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="section section-md pt-4">
+            <!-- Form -->
+            <form method="post" id="crearCarnetForm">
+            <div class="container">
+    
+                <div class="row mb-5 mb-lg-5">
+                    <div class="col-lg-4 col-sm-6">
+                       <div class="mb-4">
+                            <label for="exampleInputEmail6">Folio anterior</label>
+                            <input disabled type="number" class="form-control" id="folio_desactivo" name="folio_desactivo" value="{{ carnet_user.folio }}">
+                        </div>
+                    </div><div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Área anterior</label>
+                            <input disabled type="text" class="form-control" id="area_anterior" name="area_anterior" value="{{ person_carnet.area }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Rol anterior</label>
+                            <input disabled type="text" class="form-control" id="rol_anterior" name="rol_anterior" value="{{ person_carnet.rol }}">
+                        </div>
+                    </div>
+                    
+                        
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Folio</label>
+                            <input disabled type="number"  class="form-control" id="folio" name="folio" value="-1">
+                            <small id="emailHelp" class="form-text text-gray">{{errorFolio}}</small>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Carnet de Identidad</label>
+                            <input disabled type="ci" class="form-control" id="ci" name="ci" value="{{ user['identification'] }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Nombre</label>
+                            <input disabled type="nombre" class="form-control" id="name" name="name" value="{{ user['name'] }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Área</label>
+                            <input disabled type="text" class="form-control" id="area" name="area" value="{{area}}">
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Rol</label>
+                            <!-- <input disabled type="text" class="form-control" id="rolBuscarPersona" name="rolBuscarPersona" value=""> -->
+
+
+                                {% if user["personType"] == "Student" -%}
+
+                                <input disabled type="text" class="form-control" id="rol" name="rol" value={{rol}}>
+
+                                {%- elif user["personType"] == "Worker" -%}
+                                {% if user["personTeacher"] == "TRUE" -%}
+                            <input disabled type="text" class="form-control" id="rol" name="rol" value="{{rol}}">
+                                {% elif user["personTeacher"] == "FALSE" -%}
+                            <input disabled type="text" class="form-control" id="rol" name="rol" value="{{rol}}">
+                            {%- endif %}
+                            {%- endif %}
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Tipo de Persona</label>
+                            {% if user["personType"] == "Student" -%}
+
+                                <input disabled type="text" class="form-control" id="tipoPersona" name="tipoPersona" value="Estudiante">
+
+                                {%- elif user["personType"] == "Worker" -%}
+                                <input disabled type="text" class="form-control" id="tipoPersona" name="tipoPersona" value="Trabajador">
+                            {%- endif %}
+                        </div>
+                    </div>
+                    {% if user["personType"] == "Student" -%}
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Año del estudiante</label>
+                            <input disabled type="number" class="form-control" id="annoEstudiantePersona" name="annoEstudiantePersona" value="{{user['studentYear']}}">
+                        </div>
+                    </div>
+                    {%- endif %}
+
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Tipo de Motivo</label>
+                            <select class="form-select" id="tipoMotivo" aria-label="Default select example" name="tipoMotivo" value="tipoMotivo">
+                                <option disabled selected>Seleccione</option>
+                                {% for tipo_motivo in list_tipo_motivos %}
+                                <option value = {{ tipo_motivo.id_motivo }}>{{ tipo_motivo.nombre_motivo }}</option>
+                                {% endfor %}
+                            </select>
+                            <small id="emailHelp" class="form-text text-gray">{{errorMotivo}}</small>
+                        </div>
+                                 <script>
+                         document.querySelector('form').addEventListener('submit', function(event) {
+                         var selectedOption = document.getElementById('tipoMotivo').value;
+                         if (selectedOption === '' || selectedOption === 'Seleccione') {
+                             alert('Por favor, seleccione una opción en el campo de Tipo de motivo.');
+                          event.preventDefault(); // Evita que el formulario se envíe
+                          }
+                            });
+                          </script>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Comprobante</label>
+                            <input required type="text" class="form-control" id="comprobante_motivo" name="comprobante_motivo" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]+$" title="Solo debe tener letras y dígitos" value="{{ comprobante_motivo }}">
+                            <!-- <small id="emailHelp" class="form-text text-gray">{{errorCI}}</small> -->
+                        </div>
+                        
+                    </div>
+
+                    <!-- <div class="col-lg-4 col-sm-6">  
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Estado del carnet</label>
+                            <select class="form-select" id="estado" aria-label="Default select example" name="estado" value="estado">
+                                <option selected>Seleccione</option>
+                                <option value="Solicitado">Solicitado</option>
+                                <option value="Hecho">Hecho</option>
+                                <option value="Entregado">Entregado</option>
+                            </select>
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="col-lg-4 col-sm-6">
+                        <label class="my-1 me-2" for="inlineFormCustomSelectPref">Foto</label>
+                        <img id="fotoCarnet" src="" width="100" height="100">
+                        End of Form
+                    </div> -->
+                </div>
+                 <style>
+                    .container{
+                         display: inline-block;
+                    }
+                    #button_aceptar{
+                        position: relative;
+                         z-index: 1;
+                    }
+                      #loading_busqueda {
+                        display: none;
+                        position: absolute;
+                        margin-left: 10px;
+                        top: 68%;
+                        left:60%;
+                        transform: translate(-50%, -50%);
+                        z-index: 2;
+                    }
+                </style>
+                 <div class="container">
+                    <div class="row mb-4 mb-lg-5 justify-content-center">
+                         <button class="btn btn-primary mb-4" onClick="showLoadingCrear()" id="button_aceptar" type="submit" style="width: auto; height: auto;">Aceptar</button>
+                    </div>
+                       <div id="loading_busqueda">
+                            <h2>Cargando...</h2>
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                        </div>
+                 </div>
+            </div>
+        </form>
+        </div>
+
+        </main>
+        {% include 'includes/footer.html' %}
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="{{url_for('static', path='js/homepage.js') }}">
+
+    </script>
+       {% block javascripts %}
+<script type="text/javascript">
+function validarFormulario() {
+    const tipoMotivo = document.getElementById("tipoMotivo").value; // Obtener el tipo de motivo seleccionado
+    const comprobante = document.getElementById("comprobante_motivo").value.trim(); // Obtener el comprobante sin espacios
+
+    // Validar que se haya seleccionado un tipo de motivo y que el comprobante no esté vacío
+      if (tipoMotivo !== "Seleccione" && /^[A-Za-z0-9]+$/.test(comprobante)) {
+        return true;
+    }
+
+    // Si no se cumplen las condiciones, mostrar alerta y retornar false
+    return false;
+}
+
+function showLoadingCrear() {
+    const mostrar = validarFormulario();
+    if (mostrar) {
+        document.getElementById("loading_busqueda").style.display = "block";
+    }
+}
+    </script>
+{% endblock javascripts %}
+    {% endblock %}
+</body>
+</html>

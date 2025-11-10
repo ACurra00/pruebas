@@ -1,0 +1,84 @@
+{% extends "shared/base_homepages.html" %}
+<!DOCTYPE html>
+<body>
+
+    {% block content %}
+
+    <main>
+
+        <!-- Hero -->
+        <section class="section-header overflow-hidden pt-7 pt-lg-6 pb-9 pb-lg-0 bg-primary text-white">
+        </section>
+
+        <div class="section section-sm pb-0 mb-n4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <h1 class="text-center">Insertar Folios de {{folio}}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="section section-md pt-4">
+            <!-- Form -->
+            <form method="post">
+            <div class="container">
+    
+                <div class="row mb-5 mb-lg-5">
+                    <div class="col-lg-4 col-sm-6">
+                       <div class="mb-4">
+                            <label for="exampleInputEmail6">Folio número 1 </label>
+                            <input type="text" class="form-control" id="cont_folio_numero_1" pattern="^[0-9]+$" title="Solo debe tener números positivos" name="cont_folio_numero_1" value="{{cont_folio_numero_1}}">
+                        </div>
+                    </div><div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Folio número 2 </label>
+                            <input type="text" class="form-control" id="cont_folio_numero_2" pattern="^[0-9]+$" title="Solo debe tener números positivos" name="cont_folio_numero_2" value="{{cont_folio_numero_2}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Folio número 3 </label>
+                            <input type="text" class="form-control" id="cont_folio_numero_3" pattern="^[0-9]+$" title="Solo debe tener números positivos" name="cont_folio_numero_3" value="{{cont_folio_numero_3}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Folio número 4 </label>
+                            <input type="text" class="form-control" id="cont_folio_numero_4" pattern="^[0-9]+$" title="Solo debe tener números positivos" name="cont_folio_numero_4" value="{{cont_folio_numero_4}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Folio número 5 </label>
+                            <input type="text" class="form-control" id="cont_folio_numero_5" pattern="^[0-9]+$" title="Solo debe tener números positivos" name="cont_folio_numero_5" value="{{cont_folio_numero_5}}">
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Cantidad de Hojas</label>
+                            <input type="text" class="form-control" id="cont_cantidad_hojas" pattern="^[0-9]+$" title="Solo debe tener números positivos" name="cont_cantidad_hojas" value="{{cont_cantidad_hojas}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4 mb-lg-5">
+                    <button class="btn btn-primary mb-4" type="submit" style="margin-left: 20%;width: 60% !important;">Aceptar</button>
+                </div>
+            </div>
+        </form>
+        </div>
+
+        </main>
+        {% include 'includes/footer.html' %}
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="{{url_for('static', path='js/homepage.js') }}">
+
+    </script>
+
+    {% endblock %}
+</body>
+</html>

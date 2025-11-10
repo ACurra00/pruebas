@@ -1,0 +1,140 @@
+{% extends "shared/base_homepages.html" %}
+<!DOCTYPE html>
+<body>
+
+    {% block content %}
+
+    <main>
+
+        <!-- Hero -->
+        <section class="section-header overflow-hidden pt-7 pt-lg-6 pb-9 pb-lg-0 bg-primary text-white">
+        </section>
+
+        <div class="section section-sm pb-0 mb-n4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <h1 class="text-center">Formulario de Crear Carnet para un matriculado</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="section section-md pt-4">
+            <!-- Form -->
+            <form method="post" id="crearCarnetForm">
+            <div class="container">
+
+                <div class="row mb-5 mb-lg-5">
+                    <div class="col-lg-4 col-sm-6">
+                       <div class="mb-4">
+                            <label for="exampleInputEmail6">Folio anterior</label>
+                            <input disabled type="number" class="form-control" id="folio_desactivo" name="folio_desactivo" value="{{ carnet_user.folio }}">
+                        </div>
+                    </div><div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Área anterior</label>
+                            <input disabled type="text" class="form-control" id="area_anterior" name="area_anterior" value="{{ person_carnet.area }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Rol anterior</label>
+                            <input disabled type="text" class="form-control" id="rol_anterior" name="rol_anterior" value="{{ person_carnet.rol }}">
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Folio</label>
+                            <input required type="number" class="form-control" id="folio" name="folio" value="">
+                            <small id="emailHelp" class="form-text text-gray">{{errorFolio}}</small>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Carnet de Identidad</label>
+                            <input disabled type="ci" class="form-control" id="ci" name="ci" value="{{ user['identification'] }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Nombre</label>
+                            <input disabled type="nombre" class="form-control" id="name" name="name" value="{{ user['name'] }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Área</label>
+                            <input disabled type="text" class="form-control" id="area" name="area" value="{{area}}">
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Rol</label>
+                            <!-- <input disabled type="text" class="form-control" id="rolBuscarPersona" name="rolBuscarPersona" value=""> -->
+                                <input disabled type="text" class="form-control" id="rol" name="rol" value={{rol}}>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4 col-sm-6">
+
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Tipo de Persona</label>
+                                <input disabled type="text" class="form-control" id="tipoPersona" name="tipoPersona" value="Estudiante">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Año del estudiante</label>
+                            <input disabled type="number" class="form-control" id="annoEstudiantePersona" name="annoEstudiantePersona" value="{{user['studentYear']}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label class="my-1 me-2" for="inlineFormCustomSelectPref">Tipo de Motivo</label>
+                            <select class="form-select" id="tipoMotivo" aria-label="Default select example" name="tipoMotivo" value="tipoMotivo">
+                                <option disabled selected>Seleccione</option>
+                                {% for tipo_motivo in list_tipo_motivos %}
+                                <option value = {{ tipo_motivo.id_motivo }}>{{ tipo_motivo.nombre_motivo }}</option>
+                                {% endfor %}
+                            </select>
+                            <small id="emailHelp" class="form-text text-gray">{{errorMotivo}}</small>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="mb-4">
+                            <label for="exampleInputEmail6">Comprobante</label>
+                            <input required type="text" class="form-control" id="comprobante_motivo" name="comprobante_motivo" pattern="[0-9]" title="Solo debe tener letras y dígitos" value="{{ comprobante_motivo }}">
+                            <!-- <small id="emailHelp" class="form-text text-gray">{{errorCI}}</small> -->
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row mb-4 mb-lg-5">
+                    <button class="btn btn-primary mb-4" type="submit" style="position: inherit;">Aceptar</button>
+                </div>
+            </div>
+        </form>
+        </div>
+        </main>
+        {% include 'includes/footer.html' %}
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="{{url_for('static', path='js/homepage.js') }}">
+
+    </script>
+
+    {% endblock %}
+</body>
+</html>
