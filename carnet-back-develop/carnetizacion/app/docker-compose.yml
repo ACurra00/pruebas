@@ -1,0 +1,51 @@
+version: "3.7"
+
+services:
+  # web:
+  #   image: nginx:alpine
+  #   container_name: web
+  #   hostname: web
+  #   restart: always
+  #   tty: true
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/conf.d/default.conf  
+  #     - ./static:/usr/src/app/static
+  #     - ./certificados:/certificados
+  #   ports:
+  #     - 80:80
+  #     #- 443:443
+  #   depends_on:
+  #     - api
+
+  api:
+    image: carnetizacion-cujae:0.0.1
+    build: .
+    container_name: api
+    hostname: api
+    restart: always
+    tty: true
+    working_dir: /usr/src/app
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+      
+  postgres:        
+    image: postgres:14-alpine
+    container_name: postgres
+    restart: always
+    ports:
+      - 5433:5432
+    volumes:      
+      - postgres:/var/lib/postgresql/data
+ #     - binary:/usr/local/bin
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: carnetizacion1
+      
+volumes:
+  postgres:
+    driver: local

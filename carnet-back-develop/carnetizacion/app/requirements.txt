@@ -1,0 +1,59 @@
+
+psycopg2-binary
+uvicorn
+requests
+barcode_generator
+psycopg2
+pydantic == 1.10.5
+qrcode
+starlette
+python-barcode
+python-jose
+PyJWT
+python-multipart
+fastapi
+
+#database
+sqlalchemy
+
+#for loading environment variables
+python-dotenv
+
+#for  cleaning up codebase on each commit
+pre-commit
+
+#seedir to #print tree structure of folders
+seedir
+
+#for template
+jinja2
+
+#for static files
+aiofiles
+
+#auth
+httpx
+
+#for testing
+pytest
+pytest-asyncio
+locust
+
+fastapi_login
+
+shortcuts
+views
+
+django
+
+
+xlrd
+pandas
+openpyxl
+reportlab
+reportlab-qrcode
+
+Pillow
+xlwt
+twine
+tailwind
